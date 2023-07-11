@@ -1,0 +1,92 @@
+
+To design a MySQL database for IMDB, you can create the following tables:
+
+Movies:
+
+movie_id (primary key)
+movie_title
+release_year
+movie_duration
+...
+Media:
+
+media_id (primary key)
+movie_id (foreign key referencing Movies.movie_id)
+media_type (e.g., video, image)
+media_url
+...
+Genres:
+
+genre_id (primary key)
+genre_name
+...
+Movie_Genres (junction table for Movie and Genre relationship):
+
+movie_id (foreign key referencing Movies.movie_id)
+genre_id (foreign key referencing Genres.genre_id)
+...
+Reviews:
+
+review_id (primary key)
+movie_id (foreign key referencing Movies.movie_id)
+user_id (foreign key referencing Users.user_id)
+review_text
+review_rating
+...
+Users:
+
+user_id (primary key)
+username
+email
+...
+Artists:
+
+artist_id (primary key)
+artist_name
+...
+Skills:
+
+skill_id (primary key)
+skill_name
+...
+Artist_Skills (junction table for Artist and Skill relationship):
+
+artist_id (foreign key referencing Artists.artist_id)
+skill_id (foreign key referencing Skills.skill_id)
+...
+Film_Artists:
+
+film_artist_id (primary key)
+artist_id (foreign key referencing Artists.artist_id)
+movie_id (foreign key referencing Movies.movie_id)
+role_name
+
+
+
+
+
+1.Get all media (videos or images) associated with a movie:
+
+   SELECT * FROM Media WHERE movie_id = <movie_id>;
+2.Get all genres of a movie:
+
+    SELECT Genres.genre_name FROM Genres
+    JOIN Movie_Genres ON Genres.genre_id = Movie_Genres.genre_id
+    WHERE Movie_Genres.movie_id = <movie_id>;
+3.Get all reviews for a movie and the corresponding user details:
+
+      SELECT Reviews.*, Users.username FROM Reviews
+      JOIN Users ON Reviews.user_id = Users.user_id
+      WHERE Reviews.movie_id = <movie_id>;
+4.Get all skills of an artist:
+
+        SELECT Skills.skill_name FROM Skills
+        JOIN Artist_Skills ON Skills.skill_id = Artist_Skills.skill_id
+        WHERE Artist_Skills.artist_id = <artist_id>;
+5.Get all roles performed by an artist in a film:
+
+          SELECT Film_Artists.role_name FROM Film_Artists
+         WHERE Film_Artists.artist_id = <artist_id> AND Film_Artists.movie_id = <movie_id>;
+
+
+
